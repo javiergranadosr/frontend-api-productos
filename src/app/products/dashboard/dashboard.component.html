@@ -1,0 +1,222 @@
+<div class="container">
+  <div class="max-full px-4 mx-auto sm:px-8">
+    <div class="flex flex-row flex-wrap justify-end">
+      <button
+        type="button"
+        class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+      >
+        Nuevo producto
+      </button>
+    </div>
+    <div class="py-8" *ngIf="products && products.content.length > 0">
+      <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
+        <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
+          <table class="min-w-full leading-normal">
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Nombre
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Marca
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Modelo
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Precio
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Descuento
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
+                  Categoría
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                ></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products.content">
+                <!--<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                      <a href="#" class="relative block">
+                        <img
+                          alt="profil"
+                          src="/images/person/8.jpg"
+                          class="mx-auto object-cover rounded-full h-10 w-10"
+                        />
+                      </a>
+                    </div>
+                    <div class="ml-3">
+                      <p class="text-gray-900 whitespace-no-wrap">Jean marc</p>
+                    </div>
+                  </div>
+                </td> -->
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    {{ product.name }}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    {{ product.brand }}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    {{ product.model }}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    ${{ product.price }}
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <p class="text-gray-900 whitespace-no-wrap">
+                    {{ product.discount }}%
+                  </p>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200 w-auto">
+                  <span
+                    class="relative inline-block px-3 py-1 font-semibold leading-tight text-green-900"
+                  >
+                    <span
+                      aria-hidden="true"
+                      class="absolute inset-0 bg-gray-900 rounded-full"
+                    >
+                    </span>
+                    <span class="relative text-white">
+                      {{ product.category.name }}
+                    </span>
+                  </span>
+                </td>
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                  <div
+                    class="flex flex-row flex-nowrap justify-center items-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="h-5 w-5 cursor-pointer"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                      />
+                    </svg>
+
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="w-5 h-5 cursor-pointer"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                      />
+                    </svg>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div
+            class="flex flex-col items-center px-5 py-5 bg-white xs:flex-row xs:justify-between"
+          >
+            <div class="flex items-center">
+              <button
+                type="button"
+                class="w-full p-4 text-base text-gray-600 bg-white border rounded-l-xl hover:bg-gray-100"
+              >
+                <svg
+                  width="9"
+                  fill="currentColor"
+                  height="8"
+                  class=""
+                  viewBox="0 0 1792 1792"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"
+                  ></path>
+                </svg>
+              </button>
+              <button
+                type="button"
+                class="w-full px-4 py-2 text-base text-indigo-500 bg-white border-t border-b hover:bg-gray-100"
+              >
+                1
+              </button>
+              <button
+                type="button"
+                class="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100"
+              >
+                2
+              </button>
+              <button
+                type="button"
+                class="w-full px-4 py-2 text-base text-gray-600 bg-white border-t border-b hover:bg-gray-100"
+              >
+                3
+              </button>
+              <button
+                type="button"
+                class="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100"
+              >
+                4
+              </button>
+              <button
+                type="button"
+                class="w-full p-4 text-base text-gray-600 bg-white border-t border-b border-r rounded-r-xl hover:bg-gray-100"
+              >
+                <svg
+                  width="9"
+                  fill="currentColor"
+                  height="8"
+                  class=""
+                  viewBox="0 0 1792 1792"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"
+                  ></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
