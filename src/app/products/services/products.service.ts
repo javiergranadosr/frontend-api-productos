@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { ListProducts } from '../interfaces/list-products';
 import { environment } from '../../../environments/environment';
+import { Product } from '../interfaces/create-product';
+import { SuccessResponse } from '../../shared/common/interfaces/success-response';
 
 @Injectable({
   providedIn: 'root',
@@ -21,5 +23,37 @@ export class ProductsService {
         return throwError(() => new Error('Error in getting products.'));
       })
     );
+  }
+
+  public create(product: Product): Observable<SuccessResponse> {
+    return this.http.post<SuccessResponse>(`${this._baseUrl}`, product);
+  }
+
+  public getKeyForm(key: string): string {
+    let keyForm: string = '';
+    switch (key) {
+      case 'name':
+        keyForm = 'Nombre del producto';
+        break;
+      case 'brand':
+        keyForm = 'La marca del producto';
+        break;
+      case 'model':
+        keyForm = 'El modelo del producto';
+        break;
+      case 'price':
+        keyForm = 'El precio del producto';
+        break;
+      case 'discount':
+        keyForm = ' El descuento del producto';
+        break;
+      case 'department':
+        keyForm = ' El departamento';
+        break;
+      case 'categoryId':
+        keyForm = 'La categoría del producto';
+        break;
+    }
+    return keyForm;
   }
 }

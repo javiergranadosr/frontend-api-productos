@@ -28,6 +28,31 @@
         class="w-full flex flex-col max-w-lg px-4 py-8 bg-slate-50 rounded-lg shadow sm:px-6 md:px-8 lg:px-10"
       >
         <div
+          *ngIf="fieldErrors && fieldErrors.errors.length > 0"
+          class="self-center mb-2"
+        >
+          <div
+            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
+            role="alert"
+          >
+            <ul class="list-disc">
+              <li *ngFor="let err of fieldErrors.errors">{{ err }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div *ngIf="errors && errors.length > 0" class="self-center mb-2">
+          <div
+            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
+            role="alert"
+          >
+            <ul class="list-disc">
+              <li *ngFor="let err of errors">{{ err }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div
           class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl"
         >
           Nuevo producto
@@ -38,37 +63,63 @@
           Ingresa los datos solicitados
         </span>
         <div class="p-6 mt-4">
-          <form action="#">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="mb-2">
               <textarea
+                formControlName="name"
                 rows="2"
                 placeholder="Nombre"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               ></textarea>
+              <span
+                *ngIf="validateForm('name')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Nombre del producto debe contener un mínimo de 5 y máximo de 200
+                caracteres.
+              </span>
             </div>
             <div class="mb-2">
               <input
                 type="text"
+                formControlName="brand"
                 placeholder="Marca"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
+              <span
+                *ngIf="validateForm('brand')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Marca del producto debe contener un mínimo de 4 y máximo de 200
+                caracteres.
+              </span>
             </div>
             <div class="mb-2">
               <input
                 type="text"
+                formControlName="model"
                 placeholder="Modelo"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
+              <span
+                *ngIf="validateForm('model')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Marca del producto debe contener un mínimo de 5 y máximo de 50
+                caracteres.
+              </span>
             </div>
             <div class="mb-2">
               <input
                 type="number"
+                formControlName="price"
                 placeholder="Precio"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               />
             </div>
             <div class="mb-2">
               <select
+                formControlName="discount"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               >
                 <option value="">Seleccione un descuento</option>
@@ -86,21 +137,31 @@
 
             <div class="mb-2">
               <select
+                formControlName="department"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               >
                 <option value="">Seleccione un departamento</option>
                 <option
-                  *ngFor="let department of $departments | async"
+                  *ngFor="let department of departments$ | async"
                   [value]="department.id"
-                >{{department.name}}</option>
+                >
+                  {{ department.name }}
+                </option>
               </select>
             </div>
 
             <div class="mb-2">
               <select
+                formControlName="categoryId"
                 class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
               >
                 <option value="">Seleccione una categoría</option>
+                <option
+                  *ngFor="let category of categories$ | async"
+                  [value]="category.id"
+                >
+                  {{ category.name }}
+                </option>
               </select>
             </div>
 
