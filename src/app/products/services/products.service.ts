@@ -33,8 +33,18 @@ export class ProductsService {
     return this.http.get<Content>(`${this._baseUrl}/${productId}`);
   }
 
-  public update(productId: number, product: Product): Observable<SuccessResponse> {
-    return this.http.put<SuccessResponse>(`${this._baseUrl}/${productId}`, product);
+  public update(
+    productId: number,
+    product: Product
+  ): Observable<SuccessResponse> {
+    return this.http.put<SuccessResponse>(
+      `${this._baseUrl}/${productId}`,
+      product
+    );
+  }
+
+  public deleteProduct(productId: number): Observable<SuccessResponse> {
+    return this.http.delete<SuccessResponse>(`${this._baseUrl}/${productId}`);
   }
 
   public getKeyForm(key: string): string {
