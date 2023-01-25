@@ -1,11 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { Observable, switchMap, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Category, Department } from 'src/app/shared/common/interfaces/common';
 import { CommonService } from 'src/app/shared/common/services/common.service';
 import { Product } from '../interfaces/create-product';
@@ -20,11 +20,12 @@ import { Router } from '@angular/router';
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css'],
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
   private _commonService = inject(CommonService);
   private _fb = inject(FormBuilder);
   private _productsService = inject(ProductsService);
   private _router = inject(Router);
+  private _createSubscription!: Subscription;
 
   public departments$!: Observable<Department[]>;
   public categories$!: Observable<Category[]>;
@@ -73,9 +74,13 @@ export class CreateComponent implements OnInit {
         discount: this.form.get('discount')?.value,
         categoryId: this.form.get('categoryId')?.value,
       };
-      this._productsService.create(data).subscribe({
+      this._createSubscription = this._productsService.create(data).subscribe({
         next: (response) => {
-          Swal.fire('Notificación del sistema ', 'Producto creado con éxito', 'success');
+          Swal.fire(
+            'Notificación del sistema ',
+            'Producto creado con éxito',
+            'success'
+          );
           this._router.navigate(['/products']);
         },
         error: (err) => {
@@ -147,5 +152,11 @@ export class CreateComponent implements OnInit {
       department: ['', [Validators.required]],
       categoryId: ['', [Validators.required]],
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this._createSubscription) {
+      this._createSubscription.unsubscribe();
+    }
   }
 }

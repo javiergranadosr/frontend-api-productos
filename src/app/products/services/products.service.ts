@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ListProducts } from '../interfaces/list-products';
+import { ListProducts, Content } from '../interfaces/list-products';
 import { environment } from '../../../environments/environment';
 import { Product } from '../interfaces/create-product';
 import { SuccessResponse } from '../../shared/common/interfaces/success-response';
@@ -27,6 +27,10 @@ export class ProductsService {
 
   public create(product: Product): Observable<SuccessResponse> {
     return this.http.post<SuccessResponse>(`${this._baseUrl}`, product);
+  }
+
+  public getProductById(productId: number): Observable<Content> {
+    return this.http.get<Content>(`${this._baseUrl}/${productId}`);
   }
 
   public getKeyForm(key: string): string {

@@ -1,0 +1,90 @@
+<div class="container">
+  <div class="max-full px-4 mx-auto sm:px-8">
+    <div class="flex flex-row flex-wrap justify-end">
+      <button
+        type="button"
+        class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium flex gap-1"
+        routerLink="/products"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-4 h-4"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+          />
+        </svg>
+        Regresar
+      </button>
+    </div>
+    <div class="w-full py-8 flex flex-row justify-center mt-10">
+      <div
+        class="w-full flex flex-col max-w-lg px-4 py-8 bg-slate-50 rounded-lg shadow sm:px-6 md:px-8 lg:px-10"
+      >
+        <div
+          class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl"
+        >
+          Detalle del producto
+        </div>
+        <span
+          class="justify-center text-sm text-center text-gray-500 flex-items-center"
+        >
+          Información a detalle del producto
+        </span>
+        <div class="p-6 mt-4" *ngIf="detailProduct">
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Nombre</p>
+            <p class="text-sm text-gray-500">
+              {{ detailProduct.name }}
+            </p>
+          </div>
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Marca</p>
+            <p class="text-sm text-gray-500">{{ detailProduct.brand }}</p>
+          </div>
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Modelo</p>
+            <p class="text-sm text-gray-500">{{ detailProduct.model }}</p>
+          </div>
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Precio</p>
+            <p class="text-sm text-gray-500">
+              <span [class.line-through]="detailProduct.discount > noDiscount">
+                ${{ detailProduct.price | number }}
+              </span>
+              <span
+                *ngIf="detailProduct.discount > noDiscount"
+                [class.text-red-500]="detailProduct.discount > noDiscount"
+                class="font-bold"
+                >${{
+                  calculatedDiscount(
+                    detailProduct.price,
+                    detailProduct.discount
+                  ) | number
+                }}</span
+              >
+            </p>
+          </div>
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Categoría</p>
+            <p class="text-sm text-gray-500">
+              {{ detailProduct.category.name }}
+            </p>
+          </div>
+          <div class="mb-2">
+            <p class="text-md font-bold text-gray-800">Departamento</p>
+            <p class="text-sm text-gray-500">
+              {{ detailProduct.category.department.name }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
