@@ -38,6 +38,7 @@ export class CreateComponent implements OnInit, OnDestroy {
     this.departments$ = this._commonService.getAllDepartments();
 
     this.form.get('department')?.valueChanges.subscribe((department) => {
+      this.form.get('categoryId')?.setValue('');
       if ((department as string).length > 0) {
         this.categories$ = this._commonService.getAllCategories(
           Number(department)

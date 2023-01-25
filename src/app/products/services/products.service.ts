@@ -33,6 +33,10 @@ export class ProductsService {
     return this.http.get<Content>(`${this._baseUrl}/${productId}`);
   }
 
+  public update(productId: number, product: Product): Observable<SuccessResponse> {
+    return this.http.put<SuccessResponse>(`${this._baseUrl}/${productId}`, product);
+  }
+
   public getKeyForm(key: string): string {
     let keyForm: string = '';
     switch (key) {
