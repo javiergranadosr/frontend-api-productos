@@ -144,6 +144,7 @@ export class EditComponent implements OnInit, OnDestroy {
         .getProductById(Number(this._activatedRouter.snapshot.params['id']))
         .subscribe({
           next: (product) => {
+            this.product = product;
             this.categories$ = this._commonService.getAllCategories(
               Number(product.category.department.id)
             );

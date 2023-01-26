@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public products!: ListProducts;
   public productsSubscription!: Subscription;
   public deleteProductSubscription!: Subscription;
+  public loading: boolean = true;
 
   constructor(private productsService: ProductsService) {}
 
@@ -29,8 +30,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
+        this.loading = true;
         this.deleteProductSubscription = this.productsService
           .deleteProduct(productId)
           .subscribe({
@@ -48,6 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Hubo un error al eliminar producto',
                 'error'
               );
+              this.loadProducts();
             },
           });
       }
@@ -56,6 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadProducts(): void {
     this.productsService.getAllProducts().subscribe((products) => {
+      this.loading = false;
       this.products = products;
     });
   }
