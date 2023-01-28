@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import { ListProducts, Content } from '../interfaces/list-products';
@@ -14,8 +14,9 @@ export class ProductsService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllProducts(): Observable<ListProducts> {
-    return this.http.get<ListProducts>(this._baseUrl).pipe(
+  public getAllProducts(size: number, page: number): Observable<ListProducts> {
+    let params = new HttpParams().append('size', size).append("page", page);
+    return this.http.get<ListProducts>(this._baseUrl, { params }).pipe(
       delay(2000),
       map((response) => {
         return response;
@@ -31,9 +32,9 @@ export class ProductsService {
   }
 
   public getProductById(productId: number): Observable<Content> {
-    return this.http.get<Content>(`${this._baseUrl}/${productId}`).pipe(
-      delay(2000)
-    );
+    return this.http
+      .get<Content>(`${this._baseUrl}/${productId}`)
+      .pipe(delay(2000));
   }
 
   public update(

@@ -4,10 +4,21 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { RouterModule } from '@angular/router';
 import { FormatDiscountPipe } from './common/pipes/format-discount.pipe';
 import { LoadingComponent } from './loading/loading.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
-  declarations: [NavbarComponent, FormatDiscountPipe, LoadingComponent],
+  declarations: [
+    NavbarComponent,
+    FormatDiscountPipe,
+    LoadingComponent,
+    PaginationComponent,
+  ],
   imports: [CommonModule, RouterModule],
-  exports: [NavbarComponent, FormatDiscountPipe, LoadingComponent]
+  exports: [
+    NavbarComponent,
+    FormatDiscountPipe,
+    LoadingComponent,
+    PaginationComponent,
+  ],
 })
 export class SharedModule {}

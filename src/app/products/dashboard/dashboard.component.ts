@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { PaginationService } from 'src/app/shared/common/services/pagination.service';
 import Swal from 'sweetalert2';
 import { ListProducts } from '../interfaces/list-products';
 import { ProductsService } from '../services/products.service';
@@ -14,11 +15,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public productsSubscription!: Subscription;
   public deleteProductSubscription!: Subscription;
   public loading: boolean = true;
+  public loadingData: boolean = false;
+  public paginationSubscription!: Subscription;
+  public sizeData: number = 10;
 
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private paginationService: PaginationService
+  ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.paginationSubscription = this.paginationService.page$.subscribe(
+      (page) => {
+        this.loadingData = true;
+        this.loadProducts(this.sizeData,page);
+      }
+    );
   }
 
   public deleteProduct(productId: number): void {
@@ -43,7 +55,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Producto eliminado con éxito.',
                 'success'
               );
-              this.loadProducts();
+              this.loadProducts(this.sizeData,0);
             },
             error: () => {
               Swal.fire(
@@ -51,16 +63,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Hubo un error al eliminar producto',
                 'error'
               );
-              this.loadProducts();
+              this.loadProducts(this.sizeData,0);
             },
           });
       }
     });
   }
 
-  private loadProducts(): void {
-    this.productsService.getAllProducts().subscribe((products) => {
+  private loadProducts(size: number = 10, page: number): void {
+    this.productsService.getAllProducts(size, page).subscribe((products) => {
       this.loading = false;
+      this.loadingData = false;
       this.products = products;
     });
   }
@@ -71,6 +84,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     if (this.deleteProductSubscription) {
       this.deleteProductSubscription.unsubscribe();
+    }
+
+    if (this.paginationSubscription) {
+      this.paginationService.setPage(0);
+      this.paginationSubscription.unsubscribe();
     }
   }
 }
