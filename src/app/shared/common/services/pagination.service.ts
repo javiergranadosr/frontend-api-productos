@@ -1,19 +1,34 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Pagination } from '../interfaces/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaginationService {
-  public page$ = new BehaviorSubject<number>(0);
+  private _page$ = new BehaviorSubject<number>(0);
+  private _filter$ = new BehaviorSubject<Pagination>({
+    page: 1,
+    prev: 0,
+    next: 0,
+  });
 
   constructor() {}
 
-  public setPage(page: number) {
-    this.page$.next(page);
+  public setPage(page: number): void {
+    this._page$.next(page);
   }
 
-  public getPage(): Observable<number> {
-    return this.page$.asObservable();
+  public getPage$(): Observable<number> {
+    return this._page$.asObservable();
   }
+
+  public setPagination(pagination:Pagination): void {
+    this._filter$.next(pagination);
+  }
+
+  public getPagination$(): Observable<Pagination> {
+    return this._filter$.asObservable();
+  }
+
 }

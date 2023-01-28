@@ -8,3 +8,9 @@ export interface Category {
   id: number;
   name: string;
 }
+
+export interface Pagination{
+  page: number;
+  prev:number;
+  next:number;
+}

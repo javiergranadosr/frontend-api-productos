@@ -3,21 +3,44 @@
     <div class="flex flex-row flex-wrap justify-end">
       <button
         type="button"
-        class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
+        class="bg-gray-800 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-900"
         routerLink="/products/create"
       >
         Nuevo producto
       </button>
     </div>
+    <div class="mt-2">
+      <label for="" class="block">Filtrar por categoría:</label>
+      <select
+        class="rounded-lg border-transparent appearance-none border border-gray-300 w-auto py-2 px-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+        (change)="onChange($event)"
+        [formControl]="filterCategory"
+      >
+        <option value="">Seleccione una categoría</option>
+        <option
+          *ngFor="let category of categories$ | async"
+          [value]="category.id"
+        >
+          {{ category.name }}
+        </option>
+      </select>
+      <button
+        type="button"
+        class="bg-pink-600 text-white px-3 py-2 rounded-md text-sm font-medium ml-5 hover:bg-pink-700"
+        (click)="cleanFilter()"
+      >
+        Limpiar filtro
+      </button>
+    </div>
     <app-loading *ngIf="loading"></app-loading>
-    <div
-      class="py-8"
-      *ngIf="!loading && products && products.content.length > 0"
-    >
+    <div class="py-8" *ngIf="!loading && products">
       <div class="px-4 py-4 -mx-4 overflow-x-auto sm:-mx-8 sm:px-8">
         <div class="inline-block min-w-full overflow-hidden rounded-lg shadow">
           <app-loading *ngIf="loadingData"></app-loading>
-          <table  *ngIf="!loadingData" class="min-w-full leading-normal">
+          <table
+            *ngIf="!loadingData && products.content.length > 0"
+            class="min-w-full leading-normal"
+          >
             <thead>
               <tr>
                 <th
@@ -113,7 +136,7 @@
                   >
                     <span
                       aria-hidden="true"
-                      class="absolute inset-0 bg-gray-900 rounded-full"
+                      class="absolute inset-0 bg-pink-700 rounded-full"
                     >
                     </span>
                     <span class="relative text-white">
@@ -185,6 +208,10 @@
               </tr>
             </tbody>
           </table>
+          <app-notification
+            *ngIf="!loadingData && products.content.length === 0"
+            message="Lo sentimos no se encontró información de productos. "
+          ></app-notification>
           <!-- Pagination -->
           <app-pagination [data]="products"></app-pagination>
         </div>

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormatDiscountPipe } from './common/pipes/format-discount.pipe';
 import { LoadingComponent } from './loading/loading.component';
 import { PaginationComponent } from './pagination/pagination.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     FormatDiscountPipe,
     LoadingComponent,
     PaginationComponent,
+    NotificationComponent,
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -19,6 +21,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     FormatDiscountPipe,
     LoadingComponent,
     PaginationComponent,
+    NotificationComponent
   ],
 })
 export class SharedModule {}

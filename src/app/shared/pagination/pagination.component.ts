@@ -6,16 +6,19 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ListProducts } from '../../products/interfaces/list-products';
 import { PaginationService } from '../common/services/pagination.service';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-pagination',
   templateUrl: './pagination.component.html',
   styleUrls: ['./pagination.component.css'],
 })
-export class PaginationComponent implements OnInit, OnChanges {
+export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
   private _paginationService = inject(PaginationService);
+  public paginationSubscription!: Subscription;
 
   @Input() public data!: ListProducts;
   public initArrayPages: number[] = [];
@@ -27,8 +30,13 @@ export class PaginationComponent implements OnInit, OnChanges {
   public page: number = 1;
 
   ngOnInit(): void {
-    this.initLoadPages();
-    this.configureArrayPages(this.prev, this.next);
+    this.paginationSubscription = this._paginationService
+      .getPagination$()
+      .subscribe((filter) => {
+        this.page = filter.page;
+        this.prev = filter.prev;
+        this.next = this.pagesElements;
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -37,6 +45,12 @@ export class PaginationComponent implements OnInit, OnChanges {
       Object.keys(changes['data']).length > 0
     ) {
       this.loading = false;
+      this.paginationSubscription = this._paginationService
+        .getPagination$()
+        .subscribe((filter) => {
+          this.initLoadPages();
+          this.configureArrayPages(this.prev, this.next);
+        });
     }
   }
 
@@ -46,7 +60,7 @@ export class PaginationComponent implements OnInit, OnChanges {
       this.prev--;
       this.next--;
     } else {
-      this.page = 0;
+      this.page = 1;
       this.prev = 0;
       this.next = this.pagesElements;
     }
@@ -78,6 +92,16 @@ export class PaginationComponent implements OnInit, OnChanges {
   }
 
   private configureArrayPages(prev: number, next: number): void {
-    this.arrayPages = this.initArrayPages.slice(prev, next);
+    if (this.data.totalElements > this.pagesElements) {
+      this.arrayPages = this.initArrayPages.slice(prev, next);
+    } else {
+      this.arrayPages = this.initArrayPages;
+    }
+  }
+
+  ngOnDestroy(): void {
+    if(this.paginationSubscription) {
+      this.paginationSubscription.unsubscribe();
+    }
   }
 }

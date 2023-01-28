@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { Category } from 'src/app/shared/common/interfaces/common';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 import { PaginationService } from 'src/app/shared/common/services/pagination.service';
 import Swal from 'sweetalert2';
 import { ListProducts } from '../interfaces/list-products';
@@ -18,17 +21,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public loadingData: boolean = false;
   public paginationSubscription!: Subscription;
   public sizeData: number = 10;
+  public categories$!: Observable<Category[]>;
+  public categoryId: number = 0;
+  public filterCategory: FormControl = new FormControl('');
 
   constructor(
-    private productsService: ProductsService,
-    private paginationService: PaginationService
+    private _productsService: ProductsService,
+    private _paginationService: PaginationService,
+    private _commonService: CommonService
   ) {}
 
   ngOnInit(): void {
-    this.paginationSubscription = this.paginationService.page$.subscribe(
+    this.categories$ = this._commonService.getAllCategories(Number(0));
+    this.paginationSubscription = this._paginationService.getPage$().subscribe(
       (page) => {
         this.loadingData = true;
-        this.loadProducts(this.sizeData,page);
+        this.loadProducts(this.sizeData, page);
       }
     );
   }
@@ -46,7 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
-        this.deleteProductSubscription = this.productsService
+        this.deleteProductSubscription = this._productsService
           .deleteProduct(productId)
           .subscribe({
             next: () => {
@@ -55,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Producto eliminado con éxito.',
                 'success'
               );
-              this.loadProducts(this.sizeData,0);
+              this.loadProducts(this.sizeData, 0);
             },
             error: () => {
               Swal.fire(
@@ -63,19 +71,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Hubo un error al eliminar producto',
                 'error'
               );
-              this.loadProducts(this.sizeData,0);
+              this.loadProducts(this.sizeData, 0);
             },
           });
       }
     });
   }
 
-  private loadProducts(size: number = 10, page: number): void {
-    this.productsService.getAllProducts(size, page).subscribe((products) => {
-      this.loading = false;
-      this.loadingData = false;
-      this.products = products;
+  public onChange(event: any): void {
+    this.categoryId = Number(event.target.value);
+    this.filterCategory.setValue(this.categoryId);
+    this.setValuesFilter(this.categoryId);
+  }
+
+  public cleanFilter(): void {
+    this.filterCategory.setValue("");
+    this.setValuesFilter(0);
+  }
+
+  private setValuesFilter(categpryId: number) {
+    this.categoryId = categpryId;
+    this._paginationService.setPage(0);
+    this._paginationService.setPagination({
+      page: 1,
+      prev: 0,
+      next: 0,
     });
+  }
+
+  private loadProducts(size: number = 10, page: number): void {
+    this._productsService
+      .getAllProducts(size, page, this.categoryId)
+      .subscribe((products) => {
+        this.loading = false;
+        this.loadingData = false;
+        this.products = products;
+      });
   }
 
   ngOnDestroy(): void {
@@ -87,7 +118,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     if (this.paginationSubscription) {
-      this.paginationService.setPage(0);
+      this._paginationService.setPage(0);
       this.paginationSubscription.unsubscribe();
     }
   }

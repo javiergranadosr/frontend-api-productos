@@ -14,8 +14,8 @@ export class ProductsService {
 
   constructor(private http: HttpClient) {}
 
-  public getAllProducts(size: number, page: number): Observable<ListProducts> {
-    let params = new HttpParams().append('size', size).append("page", page);
+  public getAllProducts(size: number, page: number, categoryId: number = 0): Observable<ListProducts> {
+    let params = new HttpParams().append('size', size).append("page", page).append("categoryId", categoryId);
     return this.http.get<ListProducts>(this._baseUrl, { params }).pipe(
       delay(2000),
       map((response) => {
