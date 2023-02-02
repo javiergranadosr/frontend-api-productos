@@ -13,6 +13,13 @@ const routes: Routes = [
       import('./products/products.module').then((p) => p.ProductsModule),
   },
   {
+    path: 'departments',
+    loadChildren: () =>
+      import('./departments/departments.module').then(
+        (m) => m.DepartmentsModule
+      ),
+  },
+  {
     path: '**',
     redirectTo: 'products',
     pathMatch: 'full',

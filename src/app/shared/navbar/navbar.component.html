@@ -64,20 +64,21 @@
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a
               [routerLink]="['/products']"
-              class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-              aria-current="page"
+              class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              routerLinkActive="bg-gray-900 text-white"
               >Productos</a
             >
 
             <a
-              href="#"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              routerLinkActive="bg-gray-900 text-white"
               >Categorías</a
             >
 
             <a
-              href="#"
+              [routerLink]="['/departments']"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              routerLinkActive="bg-gray-900 text-white"
               >Departamentos</a
             >
           </div>
