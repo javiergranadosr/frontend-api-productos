@@ -9,28 +9,40 @@
         Nuevo producto
       </button>
     </div>
-    <div class="mt-2">
-      <label for="" class="block">Filtrar por categoría:</label>
-      <select
-        class="rounded-lg border-transparent appearance-none border border-gray-300 w-auto py-2 px-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-        (change)="onChange($event)"
-        [formControl]="filterCategory"
-      >
-        <option value="">Seleccione una categoría</option>
-        <option
-          *ngFor="let category of categories$ | async"
-          [value]="category.id"
+    <div class="mt-3 flex flex-row flex-wrap justify-between items-center">
+      <div>
+        <label for="" class="block">Filtrar por categoría:</label>
+        <select
+          class="rounded-lg border-transparent appearance-none border border-gray-300 w-auto py-2 px-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          (change)="onChange($event)"
+          [formControl]="filterCategory"
         >
-          {{ category.name }}
-        </option>
-      </select>
-      <button
-        type="button"
-        class="bg-pink-600 text-white px-3 py-2 rounded-md text-sm font-medium ml-5 hover:bg-pink-700"
-        (click)="cleanFilter()"
-      >
-        Limpiar filtro
-      </button>
+          <option value="0">Todas las categorías</option>
+          <option
+            *ngFor="let category of categories$ | async"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <button
+          type="button"
+          class="bg-pink-600 text-white px-3 py-2 rounded-md text-sm font-medium md:ml-5 sm:ml-1 sm:mt-2 hover:bg-pink-700"
+          (click)="cleanFilter()"
+        >
+          Limpiar filtro
+        </button>
+      </div>
+      <div>
+        <label for="" class="block">Cantidad a mostrar:</label>
+        <select
+          class="rounded-lg border-transparent appearance-none border border-gray-300 w-auto py-2 px-3 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          (change)="onChangeFilter($event)"
+          [formControl]="filterSize"
+        >
+          <option *ngFor="let size of sizePages" [value]="size">{{size}}</option>
+        </select>
+      </div>
     </div>
     <app-loading *ngIf="loading"></app-loading>
     <div class="py-8" *ngIf="!loading && products">

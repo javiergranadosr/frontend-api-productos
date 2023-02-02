@@ -23,7 +23,7 @@ export class PaginationService {
     return this._page$.asObservable();
   }
 
-  public setPagination(pagination:Pagination): void {
+  public setPagination(pagination: Pagination): void {
     this._filter$.next(pagination);
   }
 
@@ -31,4 +31,7 @@ export class PaginationService {
     return this._filter$.asObservable();
   }
 
+  public get sizePages(): string[] {
+    return ['5', '10', '15', '20'];
+  }
 }

@@ -65,8 +65,9 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
       this.next = this.pagesElements;
     }
     this.page = this.prev + 1; // Se suma 1 ya que la primera pagina inicia en 1  en el cliente y prev inicia en 0 por el back
+    console.log(`PREV: ${this.prev} NEXT: ${this.next} PAGE: ${this.page}`);
     this.configureArrayPages(this.prev, this.next);
-    this._paginationService.setPage(this.arrayPages[0] - 1); // Restamos -1 ya que en el back la primera pagina inicia en 0
+    this._paginationService.setPage(this.page - 1); // Restamos -1 ya que en el back la primera pagina inicia en 0
   }
 
   public nextPage(): void {
@@ -74,13 +75,17 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
     this.prev++;
     this.next++;
     this.page = this.prev + 1; // Se suma 1 ya que la primera pagina inicia en 1  en el cliente y prev inicia en 0 por el back
+    console.log(`PREV: ${this.prev} NEXT: ${this.next} PAGE: ${this.page}`);
     this.configureArrayPages(this.prev, this.next);
-    this._paginationService.setPage(this.arrayPages[0] - 1); // Restamos -1 ya que en el back la primera pagina inicia en 0
+    this._paginationService.setPage(this.page - 1); // Restamos -1 ya que en el back la primera pagina inicia en 0
   }
 
   public activePage(page: number): void {
     this.page = page;
     this.loading = true;
+    this.prev = this.page - 1; // Inicio de array de paginas
+    this.next = this.pagesElements + this.prev; // Final del array de paginas
+    console.log(`PREV: ${this.prev} NEXT: ${this.next} PAGE: ${this.page}`);
     this._paginationService.setPage(page - 1); // Restamos -1 ya que en el back la primera pagina inicia en 0
   }
 
@@ -100,7 +105,7 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.paginationSubscription) {
+    if (this.paginationSubscription) {
       this.paginationSubscription.unsubscribe();
     }
   }

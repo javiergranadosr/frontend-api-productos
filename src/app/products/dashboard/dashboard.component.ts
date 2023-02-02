@@ -20,10 +20,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public loading: boolean = true;
   public loadingData: boolean = false;
   public paginationSubscription!: Subscription;
-  public sizeData: number = 10;
+  public sizeData: number = 5;
   public categories$!: Observable<Category[]>;
   public categoryId: number = 0;
-  public filterCategory: FormControl = new FormControl('');
+  public filterCategory: FormControl = new FormControl('0');
+  public filterSize: FormControl = new FormControl(this.sizeData);
+  public sizePages: string[] = [];
 
   constructor(
     private _productsService: ProductsService,
@@ -33,12 +35,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.categories$ = this._commonService.getAllCategories(Number(0));
-    this.paginationSubscription = this._paginationService.getPage$().subscribe(
-      (page) => {
+    this.sizePages = this._paginationService.sizePages;
+    this.paginationSubscription = this._paginationService
+      .getPage$()
+      .subscribe((page) => {
         this.loadingData = true;
-        this.loadProducts(this.sizeData, page);
-      }
-    );
+        console.log("Page: ", page);
+        this.loadProducts(Number(this.filterSize.value), page);
+      });
   }
 
   public deleteProduct(productId: number): void {
@@ -63,7 +67,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Producto eliminado con éxito.',
                 'success'
               );
-              this.loadProducts(this.sizeData, 0);
+              this.filterSize.setValue(this.sizeData);
+              this.loadProducts(Number(this.filterSize.value), 0);
             },
             error: () => {
               Swal.fire(
@@ -71,7 +76,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 'Hubo un error al eliminar producto',
                 'error'
               );
-              this.loadProducts(this.sizeData, 0);
+              this.filterSize.setValue(this.sizeData);
+              this.loadProducts(Number(this.filterSize.value), 0);
             },
           });
       }
@@ -80,17 +86,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   public onChange(event: any): void {
     this.categoryId = Number(event.target.value);
+    this.filterSize.setValue(this.sizeData);
     this.filterCategory.setValue(this.categoryId);
     this.setValuesFilter(this.categoryId);
   }
 
   public cleanFilter(): void {
-    this.filterCategory.setValue("");
+    this.filterCategory.setValue('0');
+    this.filterSize.setValue(this.sizeData);
     this.setValuesFilter(0);
   }
 
-  private setValuesFilter(categpryId: number) {
-    this.categoryId = categpryId;
+  public onChangeFilter(event: Event): void {
+    let filterSize: number = Number((event.target as HTMLInputElement).value);
+    this.filterSize.setValue(filterSize);
+    this.setValuesFilter(this.categoryId);
+  }
+
+  private setValuesFilter(categoryId: number) {
+    this.categoryId = categoryId;
     this._paginationService.setPage(0);
     this._paginationService.setPagination({
       page: 1,
