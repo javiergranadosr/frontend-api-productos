@@ -1,6 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, delay, map, Observable, throwError } from 'rxjs';
+import { SuccessResponse } from 'src/app/shared/common/interfaces/success-response';
 import { environment } from 'src/environments/environment';
 import { ListDepartments } from '../interfaces/list-departments';
 
@@ -27,4 +28,9 @@ export class DepartmentsService {
       })
     );
   }
+
+  public deleteDepartment(departmentId: number): Observable<SuccessResponse> {
+    return this._http.delete<SuccessResponse>(`${this._baseUrl}/${departmentId}`);
+  }
+
 }

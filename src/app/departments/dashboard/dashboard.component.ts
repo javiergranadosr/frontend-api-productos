@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  /*public deleteDepartment(departmentId: number): void {
+  public deleteDepartment(departmentId: number): void {
     Swal.fire({
       title: '¿Está seguro de eliminar el departamento?',
       text: 'Una vez eliminado no podrá ser recuperado.',
@@ -75,7 +75,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
           });
       }
     });
-  }*/
+  }
 
   public onChangeFilterSize(event: Event): void {
     let filterSize: number = Number((event.target as HTMLInputElement).value);
