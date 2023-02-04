@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import { SuccessResponse } from 'src/app/shared/common/interfaces/success-response';
 import { environment } from 'src/environments/environment';
+import { Department } from '../interfaces/create-department';
 import { ListDepartments } from '../interfaces/list-departments';
 
 @Injectable({
@@ -29,8 +30,26 @@ export class DepartmentsService {
     );
   }
 
-  public deleteDepartment(departmentId: number): Observable<SuccessResponse> {
-    return this._http.delete<SuccessResponse>(`${this._baseUrl}/${departmentId}`);
+  public create(department: Department): Observable<SuccessResponse> {
+    return this._http.post<SuccessResponse>(this._baseUrl, department);
   }
 
+  public deleteDepartment(departmentId: number): Observable<SuccessResponse> {
+    return this._http.delete<SuccessResponse>(
+      `${this._baseUrl}/${departmentId}`
+    );
+  }
+
+  public getKeyForm(key: string): string {
+    let keyForm: string = '';
+    switch (key) {
+      case 'keyDepartment':
+        keyForm = 'La clave del departamento';
+        break;
+      case 'name':
+        keyForm = 'El nombre del departamento';
+        break;
+    }
+    return keyForm;
+  }
 }
