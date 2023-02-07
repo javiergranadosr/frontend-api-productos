@@ -8,30 +8,8 @@
       <div
         class="w-full flex flex-col max-w-lg px-4 py-8 bg-slate-50 rounded-lg shadow sm:px-6 md:px-8 lg:px-10"
       >
-        <div
-          *ngIf="fieldErrors && fieldErrors.errors.length > 0"
-          class="self-center mb-2"
-        >
-          <div
-            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
-            role="alert"
-          >
-            <ul class="list-disc">
-              <li *ngFor="let err of fieldErrors.errors">{{ err }}</li>
-            </ul>
-          </div>
-        </div>
-
-        <div *ngIf="errors && errors.length > 0" class="self-center mb-2">
-          <div
-            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
-            role="alert"
-          >
-            <ul class="list-disc">
-              <li *ngFor="let err of errors">{{ err }}</li>
-            </ul>
-          </div>
-        </div>
+        <app-field-errors [fieldErrors]="fieldErrors"></app-field-errors>
+        <app-error-list [errors]="errors"></app-error-list>
 
         <div
           class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl"

@@ -1,0 +1,10 @@
+<div *ngIf="errors && errors.length > 0" class="self-center mb-2">
+  <div
+    class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
+    role="alert"
+  >
+    <ul class="list-disc">
+      <li *ngFor="let err of errors">{{ err }}</li>
+    </ul>
+  </div>
+</div>
