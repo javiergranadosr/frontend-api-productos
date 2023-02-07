@@ -40,6 +40,16 @@ export class DepartmentsService {
     return this._http.post<SuccessResponse>(this._baseUrl, department);
   }
 
+  public update(
+    departmentId: number,
+    department: Department
+  ): Observable<SuccessResponse> {
+    return this._http.put<SuccessResponse>(
+      `${this._baseUrl}/${departmentId}`,
+      department
+    );
+  }
+
   public deleteDepartment(departmentId: number): Observable<SuccessResponse> {
     return this._http.delete<SuccessResponse>(
       `${this._baseUrl}/${departmentId}`

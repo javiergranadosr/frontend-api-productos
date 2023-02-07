@@ -1,0 +1,111 @@
+<div class="container">
+  <div class="max-full px-4 mx-auto sm:px-8">
+    <div class="flex flex-row flex-wrap justify-end">
+      <button
+        type="button"
+        class="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium flex gap-1"
+        routerLink="/departments"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="w-4 h-4"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+          />
+        </svg>
+        Regresar
+      </button>
+    </div>
+    <app-loading *ngIf="!department"></app-loading>
+    <div *ngIf="department" class="w-full py-8 flex flex-row justify-center mt-10">
+      <div
+        class="w-full flex flex-col max-w-lg px-4 py-8 bg-slate-50 rounded-lg shadow sm:px-6 md:px-8 lg:px-10"
+      >
+        <div
+          *ngIf="fieldErrors && fieldErrors.errors.length > 0"
+          class="self-center mb-2"
+        >
+          <div
+            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
+            role="alert"
+          >
+            <ul class="list-disc">
+              <li *ngFor="let err of fieldErrors.errors">{{ err }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div *ngIf="errors && errors.length > 0" class="self-center mb-2">
+          <div
+            class="bg-red-100 rounded-lg py-5 px-6 text-base text-red-700"
+            role="alert"
+          >
+            <ul class="list-disc">
+              <li *ngFor="let err of errors">{{ err }}</li>
+            </ul>
+          </div>
+        </div>
+
+        <div
+          class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl"
+        >
+          Editar departamento
+        </div>
+        <span
+          class="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400"
+        >
+          Ingresa los datos solicitados
+        </span>
+        <div class="p-6 mt-4">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="mb-2">
+              <input
+                type="text"
+                formControlName="keyDepartment"
+                placeholder="Clave del departamento"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+              <span
+                *ngIf="validateForm('keyDepartment')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Clave del departamento debe contener un mínimo de 4 y máximo de
+                20 caracteres.
+              </span>
+            </div>
+            <div class="mb-2">
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Nombre del departamento"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+              <span
+                *ngIf="validateForm('name')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Nombre del departamento debe contener un mínimo de 5 y máximo de
+                200 caracteres.
+              </span>
+            </div>
+            <div class="flex w-full my-4">
+              <button
+                type="submit"
+                class="py-2 px-4 bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+              >
+                Guardar cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

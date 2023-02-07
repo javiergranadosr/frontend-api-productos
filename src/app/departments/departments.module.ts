@@ -7,13 +7,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { CreateComponent } from './create/create.component';
 import { DetailComponent } from './detail/detail.component';
+import { EditComponent } from './edit/edit.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     CreateComponent,
-    DetailComponent
+    DetailComponent,
+    EditComponent
   ],
   imports: [
     CommonModule,
