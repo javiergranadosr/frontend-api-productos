@@ -11,6 +11,7 @@ import { ListProducts } from '../../products/interfaces/list-products';
 import { PaginationService } from '../common/services/pagination.service';
 import { OnDestroy } from '@angular/core';
 import { ListDepartments } from '../../departments/interfaces/list-departments';
+import { ListCategories } from 'src/app/categories/interfaces/list-category';
 
 @Component({
   selector: 'app-pagination',
@@ -21,7 +22,7 @@ export class PaginationComponent implements OnInit, OnChanges, OnDestroy {
   private _paginationService = inject(PaginationService);
   public paginationSubscription!: Subscription;
 
-  @Input() public data!: ListProducts | ListDepartments;
+  @Input() public data!: ListProducts | ListDepartments | ListCategories;
   public initArrayPages: number[] = [];
   public arrayPages: number[] = [];
   public pagesElements: number = 4;
