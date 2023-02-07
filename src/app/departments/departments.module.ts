@@ -6,12 +6,14 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { CreateComponent } from './create/create.component';
+import { DetailComponent } from './detail/detail.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    CreateComponent
+    CreateComponent,
+    DetailComponent
   ],
   imports: [
     CommonModule,

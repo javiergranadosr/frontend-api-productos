@@ -4,7 +4,7 @@ import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import { SuccessResponse } from 'src/app/shared/common/interfaces/success-response';
 import { environment } from 'src/environments/environment';
 import { Department } from '../interfaces/create-department';
-import { ListDepartments } from '../interfaces/list-departments';
+import { Content, ListDepartments } from '../interfaces/list-departments';
 
 @Injectable({
   providedIn: 'root',
@@ -28,6 +28,12 @@ export class DepartmentsService {
         return throwError(() => new Error('Error in getting departments.'));
       })
     );
+  }
+
+  public getDepartmentById(departmentId: number): Observable<Content> {
+    return this._http
+      .get<Content>(`${this._baseUrl}/${departmentId}`)
+      .pipe(delay(2000));
   }
 
   public create(department: Department): Observable<SuccessResponse> {
