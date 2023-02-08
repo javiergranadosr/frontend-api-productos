@@ -4,7 +4,7 @@ import { catchError, delay, map, Observable, throwError } from 'rxjs';
 import { SuccessResponse } from 'src/app/shared/common/interfaces/success-response';
 import { environment } from 'src/environments/environment';
 import { Category } from '../interfaces/create-category';
-import { ListCategories } from '../interfaces/list-category';
+import { Content, ListCategories } from '../interfaces/list-category';
 
 @Injectable({
   providedIn: 'root',
@@ -34,8 +34,24 @@ export class CategoriesService {
     );
   }
 
+  public getCategoryById(categoryId: number): Observable<Content> {
+    return this._http
+      .get<Content>(`${this._baseUrl}/${categoryId}`)
+      .pipe(delay(2000));
+  }
+
   public create(category: Category): Observable<SuccessResponse> {
     return this._http.post<SuccessResponse>(`${this._baseUrl}`, category);
+  }
+
+  public update(
+    categoryId: number,
+    category: Category
+  ): Observable<SuccessResponse> {
+    return this._http.put<SuccessResponse>(
+      `${this._baseUrl}/${categoryId}`,
+      category
+    );
   }
 
   public getKeyForm(key: string): string {
@@ -50,5 +66,4 @@ export class CategoriesService {
     }
     return keyForm;
   }
-
 }
