@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="max-full px-4 mx-auto sm:px-8">
+    <div class="flex flex-row flex-wrap justify-end">
+      <app-button-back url="/products"></app-button-back>
+    </div>
+    <div class="w-full py-8 flex flex-row justify-center mt-10">
+      <div
+        class="w-full flex flex-col max-w-lg px-4 py-8 bg-slate-50 rounded-lg shadow sm:px-6 md:px-8 lg:px-10"
+      >
+        <app-field-errors [fieldErrors]="fieldErrors"></app-field-errors>
+        <app-error-list [errors]="errors"></app-error-list>
+
+        <div
+          class="self-center mb-2 text-xl font-light text-gray-800 sm:text-2xl"
+        >
+          Nueva categoría
+        </div>
+        <span
+          class="justify-center text-sm text-center text-gray-500 flex-items-center dark:text-gray-400"
+        >
+          Ingresa los datos solicitados
+        </span>
+        <div class="p-6 mt-4">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="mb-2">
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Nombre"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+              <span
+                *ngIf="validateForm('name')"
+                class="justify-center text-sm text-center text-red-500 flex-items-center"
+              >
+                Nombre de la categoría: debe contener un mínimo de 5 y máximo de
+                200 caracteres.
+              </span>
+            </div>
+
+
+
+            <div class="mb-2">
+              <select
+                formControlName="departmentId"
+                class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              >
+                <option value="">Seleccione un departamento</option>
+                <option
+                  *ngFor="let department of departments$ | async"
+                  [value]="department.id"
+                >
+                  {{ department.name }}
+                </option>
+              </select>
+            </div>
+            <div class="flex w-full my-4">
+              <button
+                type="submit"
+                class="py-2 px-4 bg-gray-600 hover:bg-gray-700 focus:ring-gray-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+              >
+                Crear categoría
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

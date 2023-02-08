@@ -1,7 +1,9 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, delay, map, Observable, throwError } from 'rxjs';
+import { SuccessResponse } from 'src/app/shared/common/interfaces/success-response';
 import { environment } from 'src/environments/environment';
+import { Category } from '../interfaces/create-category';
 import { ListCategories } from '../interfaces/list-category';
 
 @Injectable({
@@ -31,4 +33,22 @@ export class CategoriesService {
       })
     );
   }
+
+  public create(category: Category): Observable<SuccessResponse> {
+    return this._http.post<SuccessResponse>(`${this._baseUrl}`, category);
+  }
+
+  public getKeyForm(key: string): string {
+    let keyForm: string = '';
+    switch (key) {
+      case 'departmentId':
+        keyForm = 'El departamento';
+        break;
+      case 'name':
+        keyForm = 'El nombre de la categoría';
+        break;
+    }
+    return keyForm;
+  }
+
 }
