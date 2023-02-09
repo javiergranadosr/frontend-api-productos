@@ -54,6 +54,10 @@ export class CategoriesService {
     );
   }
 
+  public deleteCategory(categoryId: number): Observable<SuccessResponse> {
+    return this._http.delete<SuccessResponse>(`${this._baseUrl}/${categoryId}`);
+  }
+
   public getKeyForm(key: string): string {
     let keyForm: string = '';
     switch (key) {
