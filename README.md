@@ -1,4 +1,4 @@
-# Sistema de productos (Frontend) - Angular
+# Sistema gestión de productos 
 
 ## Para el desarrollo de la aplicación se utilizo el framework angular.
 
