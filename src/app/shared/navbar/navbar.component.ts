@@ -6,4 +6,9 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  public toggle: boolean = false;
+
+  public openMenu(): void {
+    this.toggle = !this.toggle;
+  }
 }

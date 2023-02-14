@@ -8,6 +8,7 @@
           class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
           aria-controls="mobile-menu"
           aria-expanded="false"
+          (click)="openMenu()"
         >
           <span class="sr-only">Open main menu</span>
           <!--
@@ -61,7 +62,6 @@
       >
         <div class="hidden sm:ml-6 sm:block">
           <div class="flex space-x-4">
-            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a
               [routerLink]="['/products']"
               class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -89,25 +89,26 @@
   </div>
 
   <!-- Mobile menu, show/hide based on menu state. -->
-  <div class="sm:hidden" id="mobile-menu">
+  <div class="sm:hidden" id="mobile-menu"  *ngIf="toggle" >
     <div class="space-y-1 px-2 pt-2 pb-3">
-      <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
       <a
-        href="#"
-        class="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium"
-        aria-current="page"
+        [routerLink]="['/products']"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+        routerLinkActive="bg-gray-900 text-white"
         >Productos</a
       >
 
       <a
-        href="#"
-        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+        [routerLink]="['/categories']"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+        routerLinkActive="bg-gray-900 text-white"
         >Categorías</a
       >
 
       <a
-        href="#"
-        class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+        [routerLink]="['/departments']"
+        class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+        routerLinkActive="bg-gray-900 text-white"
         >Departamentos</a
       >
     </div>
