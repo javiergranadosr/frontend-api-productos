@@ -1,6 +1,6 @@
 # Sistema de productos (Frontend) - Angular
 
-## Para el desarrollo de la aplicación se utilizo el framework angular en su versión 15.
+## Para el desarrollo de la aplicación se utilizo el framework angular.
 
 ### Requisitos necesarios: 
 
