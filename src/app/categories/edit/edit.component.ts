@@ -1,5 +1,10 @@
 import { Component, inject, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { Codes } from 'src/app/shared/common/enum/codes';
@@ -16,7 +21,7 @@ import { CategoriesService } from '../services/categories.service';
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.css'],
 })
-export class EditComponent implements OnInit, OnDestroy{
+export class EditComponent implements OnInit, OnDestroy {
   private _fb = inject(FormBuilder);
   private _commonService = inject(CommonService);
   private _activatedRouter = inject(ActivatedRoute);
@@ -31,11 +36,33 @@ export class EditComponent implements OnInit, OnDestroy{
   public category!: Content;
   public detailSubscription!: Subscription;
   public updateSubscription!: Subscription;
+  public uploadSubscription!: Subscription;
+  private photoSelected: File | null = null;
 
   ngOnInit(): void {
     this.initForm();
     this.departments$ = this._commonService.getAllDepartments();
     this.setDataInForm();
+  }
+
+  public selectPhoto(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.photoSelected = target.files ? target.files[0] : null;
+    if (
+      this.photoSelected?.type.indexOf('image') &&
+      this.photoSelected?.type.indexOf('image') < 0
+    ) {
+      Swal.fire(
+        'Notificación del sistema',
+        'Formato invalido de imagen, solo se permiten los siguientes formatos: PNG, JPEG y JPG.',
+        'error'
+      );
+      this.photoSelected = null;
+    }
+  }
+
+  public get photoCategory(): string {
+    return this._commonService.showPhoto(this.category.image, 'categories');
   }
 
   public onSubmit(): void {
@@ -48,12 +75,39 @@ export class EditComponent implements OnInit, OnDestroy{
         .update(this.categoryId, data)
         .subscribe({
           next: (response) => {
-            Swal.fire(
-              'Notificación del sistema ',
-              'categoría actualizada con éxito',
-              'success'
-            );
-            this._router.navigate(['/categories']);
+            if (this.photoSelected) {
+              this.uploadSubscription = this._commonService
+                .uploadPhoto(
+                  this.category.id,
+                  this.photoSelected!,
+                  'categories'
+                )
+                .subscribe({
+                  next: (response) => {
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'categoría actualizada con éxito',
+                      'success'
+                    );
+                    this._router.navigate(['/categories']);
+                  },
+                  error: (err) => {
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'Hubo un error al actualizar la categoría',
+                      'error'
+                    );
+                    this._router.navigate(['/categories']);
+                  },
+                });
+            } else {
+              Swal.fire(
+                'Notificación del sistema ',
+                'categoría actualizada con éxito',
+                'success'
+              );
+              this._router.navigate(['/categories']);
+            }
           },
           error: (err) => {
             if (err.status === Number(Codes.CODE_400)) {
@@ -96,9 +150,7 @@ export class EditComponent implements OnInit, OnDestroy{
           next: (category) => {
             this.category = category;
             this.form.get('name')?.setValue(category.name);
-            this.form
-              .get('departmentId')
-              ?.setValue(category.department.id);
+            this.form.get('departmentId')?.setValue(category.department.id);
           },
           error: (error) => {
             if (

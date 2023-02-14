@@ -36,6 +36,14 @@
               {{ detailCategory.department.name }}
             </p>
           </div>
+          <div class="mb-2" *ngIf="detailCategory.image">
+            <p class="text-md font-bold text-gray-800">Foto de la categoría</p>
+            <img
+              class="p-1 bg-white border rounded w-full"
+              [src]="photoCategory"
+              alt="Foto de la categoría"
+            />
+          </div>
         </div>
       </div>
     </div>

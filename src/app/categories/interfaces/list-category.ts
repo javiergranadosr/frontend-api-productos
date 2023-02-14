@@ -16,6 +16,7 @@ export interface Content {
   id:         number;
   name:       string;
   department: Department;
+  image: string;
   products:   Product[];
 }
 

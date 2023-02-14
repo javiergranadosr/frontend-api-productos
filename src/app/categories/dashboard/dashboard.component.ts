@@ -44,6 +44,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loadCategories(Number(this.filterSize.value), page);
       });
   }
+
+  public getPhotoDepartment(filename: string): string {
+    return this._commonService.showPhoto(filename, 'categories');
+  }
+
   public deleteCategory(categoryId: number): void {
     Swal.fire({
       title: '¿Está seguro de eliminar la categoría?',

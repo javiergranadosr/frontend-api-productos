@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Codes } from 'src/app/shared/common/enum/codes';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 import Swal from 'sweetalert2';
 import { Content } from '../interfaces/list-category';
 import { CategoriesService } from '../services/categories.service';
@@ -19,8 +20,13 @@ export class DetailComponent implements OnInit, OnDestroy {
   constructor(
     private _activedRouter: ActivatedRoute,
     private _categoriesService: CategoriesService,
-    private _router: Router
+    private _router: Router,
+    private _commonService: CommonService
   ) {}
+
+  public get photoCategory(): string {
+    return this._commonService.showPhoto(this.detailCategory.image, 'categories');
+  }
 
   ngOnInit(): void {
     if (
