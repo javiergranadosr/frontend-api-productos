@@ -1,27 +1,32 @@
-# AppProducts
+# Sistema de productos (Frontend) - Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.1.
+## Para el desarrollo de la aplicación se utilizo el framework angular en su versión 15.
 
-## Development server
+### Requisitos necesarios: 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+* Angular V15+
+* Node JS V16+
 
-## Code scaffolding
+Para poder levantar el proyecto es necesario realizar las siguientes instalaciones:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Instalar CLI Angular
+* [Angular CLI](https://docs.angular.lat/guide/setup-local)
 
-## Build
+#### Instalar Node JS
+* [Node JS](https://nodejs.org/es/)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Una vez finalizadas las instalaciones, se procede abrir el proyecto, pero antes de levantarlo es necesario de instalar las dependencias con la siguiente línea de comando:
 
-## Running unit tests
+`` npm install ``
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Una vez realizada la instalación de las dependencias, se podrá levantar el proyecto con la siguiente línea de comando:
 
-## Running end-to-end tests
+`` ng serve ``
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Para visualizar el proyecto por favor ingresar a la siguiente liga:
 
-## Further help
+http://localhost:4200/
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+API REST utilizada:
+
+https://github.com/javiergranadosr/api-products
