@@ -5,6 +5,7 @@ import { ProductsService } from '../services/products.service';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 import { Content } from '../interfaces/list-products';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 
 @Component({
   selector: 'app-detail',
@@ -21,7 +22,8 @@ export class DetailComponent implements OnInit, OnDestroy {
   constructor(
     private _activedRouter: ActivatedRoute,
     private _productService: ProductsService,
-    private _router: Router
+    private _router: Router,
+    private _commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -52,6 +54,11 @@ export class DetailComponent implements OnInit, OnDestroy {
         });
     }
   }
+
+  public get photoProduct(): string {
+    return this._commonService.showPhoto(this.detailProduct.image, 'products');
+  }
+
 
   public calculatedDiscount(price: number, discount: number): number {
     let totalDiscount:number = price * discount;

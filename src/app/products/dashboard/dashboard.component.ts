@@ -45,6 +45,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
+  public getPhotoProduct(filename: string): string {
+    return this._commonService.showPhoto(filename, 'products');
+  }
+
   public deleteProduct(productId: number): void {
     Swal.fire({
       title: '¿Está seguro de eliminar el producto?',

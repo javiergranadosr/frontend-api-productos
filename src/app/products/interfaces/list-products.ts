@@ -20,6 +20,7 @@ export interface Content {
   price:    number;
   discount: number;
   category: Category;
+  image: string;
 }
 
 export interface Category {

@@ -67,6 +67,14 @@
               {{ detailProduct.category.department.name }}
             </p>
           </div>
+          <div class="mb-2" *ngIf="detailProduct.image">
+            <p class="text-md font-bold text-gray-800">Foto del producto</p>
+            <img
+              class="p-1 bg-white border rounded w-full"
+              [src]="photoProduct"
+              alt="Foto del producto"
+            />
+          </div>
         </div>
       </div>
     </div>

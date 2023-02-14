@@ -37,6 +37,8 @@ export class EditComponent implements OnInit, OnDestroy {
   public product!: Content;
   public detailSubscription!: Subscription;
   public updateSubscription!: Subscription;
+  public uploadSubscription!: Subscription;
+  private photoSelected: File | null = null;
 
   ngOnInit(): void {
     this.initForm();
@@ -49,6 +51,26 @@ export class EditComponent implements OnInit, OnDestroy {
     this.categories$ = this._commonService.getAllCategories(
       Number(event.target.value)
     );
+  }
+
+  public selectPhoto(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.photoSelected = target.files ? target.files[0] : null;
+    if (
+      this.photoSelected?.type.indexOf('image') &&
+      this.photoSelected?.type.indexOf('image') < 0
+    ) {
+      Swal.fire(
+        'Notificación del sistema',
+        'Formato invalido de imagen, solo se permiten los siguientes formatos: PNG, JPEG y JPG.',
+        'error'
+      );
+      this.photoSelected = null;
+    }
+  }
+
+  public get photoProduct(): string {
+    return this._commonService.showPhoto(this.product.image, 'products');
   }
 
   public onSubmit(): void {
@@ -65,12 +87,35 @@ export class EditComponent implements OnInit, OnDestroy {
         .update(this.productId, data)
         .subscribe({
           next: (response) => {
-            Swal.fire(
-              'Notificación del sistema ',
-              'Producto actualizado con éxito',
-              'success'
-            );
-            this._router.navigate(['/products']);
+            if (this.photoSelected) {
+              this.uploadSubscription = this._commonService
+                .uploadPhoto(this.product.id, this.photoSelected!, 'products')
+                .subscribe({
+                  next: (response) => {
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'Producto actualizado con éxito',
+                      'success'
+                    );
+                    this._router.navigate(['/products']);
+                  },
+                  error: (err) => {
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'Hubo un error al actualizar el producto',
+                      'error'
+                    );
+                    this._router.navigate(['/products']);
+                  },
+                });
+            } else {
+              Swal.fire(
+                'Notificación del sistema ',
+                'Producto actualizado con éxito',
+                'success'
+              );
+              this._router.navigate(['/products']);
+            }
           },
           error: (err) => {
             if (err.status === Number(Codes.CODE_400)) {
@@ -198,5 +243,9 @@ export class EditComponent implements OnInit, OnDestroy {
     if (this.updateSubscription) {
       this.updateSubscription.unsubscribe();
     }
+    if (this.uploadSubscription) {
+      this.uploadSubscription.unsubscribe();
+    }
+    this.photoSelected = null;
   }
 }
