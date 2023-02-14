@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Codes } from 'src/app/shared/common/enum/codes';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 import Swal from 'sweetalert2';
 import { Content } from '../interfaces/list-departments';
 import { DepartmentsService } from '../services/departments.service';
@@ -19,7 +20,8 @@ export class DetailComponent implements OnInit, OnDestroy {
   constructor(
     private _activedRouter: ActivatedRoute,
     private _departmentService: DepartmentsService,
-    private _router: Router
+    private _router: Router,
+    private _commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +51,10 @@ export class DetailComponent implements OnInit, OnDestroy {
           },
         });
     }
+  }
+
+  public get photoDepartment(): string {
+    return this._commonService.showPhoto(this.detailDepartment.image, 'departments');
   }
 
   ngOnDestroy(): void {

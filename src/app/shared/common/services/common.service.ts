@@ -23,15 +23,27 @@ export class CommonService {
     );
   }
 
-
   public getAllCategories(id: number): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this._baseUrl}/categories/all/${id}`).pipe(
-      map((response) => {
-        return response;
-      }),
-      catchError((err) => {
-        return of([]);
-      })
-    );
+    return this.http
+      .get<Category[]>(`${this._baseUrl}/categories/all/${id}`)
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((err) => {
+          return of([]);
+        })
+      );
+  }
+
+  public showPhoto(filename: string | null , module: string) {
+    return `${this._baseUrl}/${module}/show-image/${filename}`;
+  }
+
+  public uploadPhoto(id: number, photo: File, module: string): Observable<any> {
+    let formData = new FormData();
+    formData.append('id', id.toString());
+    formData.append('file', photo);
+    return this.http.post<any>(`${this._baseUrl}/${module}/upload`, formData);
   }
 }

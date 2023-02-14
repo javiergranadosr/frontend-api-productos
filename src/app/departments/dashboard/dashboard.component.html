@@ -38,6 +38,12 @@
                   scope="col"
                   class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
                 >
+                  Foto
+                </th>
+                <th
+                  scope="col"
+                  class="px-5 py-3 text-sm font-normal text-left text-gray-800 uppercase bg-white border-b border-gray-200"
+                >
                   Nombre
                 </th>
                 <th
@@ -54,22 +60,22 @@
             </thead>
             <tbody>
               <tr *ngFor="let department of departments.content">
-                <!--<td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
+                <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
                   <div class="flex items-center">
                     <div class="flex-shrink-0">
-                      <a href="#" class="relative block">
+                      <a
+                        [routerLink]="['detail', department.id]"
+                        class="relative block"
+                      >
                         <img
-                          alt="profil"
-                          src="/images/person/8.jpg"
+                          alt="Foto del departamento"
+                          [src]="getPhotoDepartment(department.image)"
                           class="mx-auto object-cover rounded-full h-10 w-10"
                         />
                       </a>
                     </div>
-                    <div class="ml-3">
-                      <p class="text-gray-900 whitespace-no-wrap">Jean marc</p>
-                    </div>
                   </div>
-                </td> -->
+                </td>
                 <td class="px-5 py-5 text-sm bg-white border-b border-gray-200">
                   <p class="text-gray-900 whitespace-no-wrap">
                     {{ department.name }}

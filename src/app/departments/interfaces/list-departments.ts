@@ -16,6 +16,7 @@ export interface Content {
   id:            number;
   keyDepartment: string;
   name:          string;
+  image: string;
   categories:    Category[];
 }
 

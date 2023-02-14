@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 import { PaginationService } from 'src/app/shared/common/services/pagination.service';
 import Swal from 'sweetalert2';
 import { ListDepartments } from '../interfaces/list-departments';
@@ -24,7 +25,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private _departmentsService: DepartmentsService,
-    private _paginationService: PaginationService
+    private _paginationService: PaginationService,
+    private _commonService: CommonService
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +38,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         console.log('Page: ', page);
         this.loadDepartments(Number(this.filterSize.value), page);
       });
+  }
+
+  public getPhotoDepartment(filename: string): string {
+    return this._commonService.showPhoto(filename, 'departments');
   }
 
   public deleteDepartment(departmentId: number): void {

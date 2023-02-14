@@ -36,6 +36,15 @@
               {{ detailDepartment.keyDepartment }}
             </p>
           </div>
+
+          <div class="mb-2" *ngIf="detailDepartment.image">
+            <p class="text-md font-bold text-gray-800">Foto del departamento</p>
+            <img
+              class="p-1 bg-white border rounded w-full"
+              [src]="photoDepartment"
+              alt="Foto del departamento"
+            />
+          </div>
         </div>
       </div>
     </div>

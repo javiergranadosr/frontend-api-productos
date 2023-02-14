@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { Content } from '../interfaces/list-departments';
 import { DepartmentsService } from '../services/departments.service';
 import { Department } from '../interfaces/create-department';
+import { CommonService } from 'src/app/shared/common/services/common.service';
 
 @Component({
   selector: 'app-edit',
@@ -24,6 +25,7 @@ export class EditComponent implements OnInit {
   private _activatedRouter = inject(ActivatedRoute);
   private _departmentService = inject(DepartmentsService);
   private _router = inject(Router);
+  private _commonService = inject(CommonService);
 
   public form!: FormGroup;
   public fieldErrors!: FieldErrors;
@@ -32,10 +34,28 @@ export class EditComponent implements OnInit {
   public department!: Content;
   public detailSubscription!: Subscription;
   public updateSubscription!: Subscription;
+  public uploadSubscription!: Subscription;
+  private photoSelected: File | null = null;
 
   ngOnInit(): void {
     this.initForm();
     this.setDataInForm();
+  }
+
+  public selectPhoto(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.photoSelected = target.files ? target.files[0] : null;
+    if (
+      this.photoSelected?.type.indexOf('image') &&
+      this.photoSelected?.type.indexOf('image') < 0
+    ) {
+      Swal.fire(
+        'Notificación del sistema',
+        'Formato invalido de imagen, solo se permiten los siguientes formatos: PNG, JPEG y JPG.',
+        'error'
+      );
+      this.photoSelected = null;
+    }
   }
 
   public onSubmit(): void {
@@ -48,12 +68,40 @@ export class EditComponent implements OnInit {
         .update(this.departmentId, data)
         .subscribe({
           next: (response) => {
-            Swal.fire(
-              'Notificación del sistema ',
-              'Departamento actualizado con éxito',
-              'success'
-            );
-            this._router.navigate(['/departments']);
+            if (this.photoSelected) {
+              this.uploadSubscription = this._commonService
+                .uploadPhoto(
+                  this.department.id,
+                  this.photoSelected!,
+                  'departments'
+                )
+                .subscribe({
+                  next: (response) => {
+                    console.log(response);
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'Departamento actualizado con éxito',
+                      'success'
+                    );
+                    this._router.navigate(['/departments']);
+                  },
+                  error: (err) => {
+                    Swal.fire(
+                      'Notificación del sistema ',
+                      'Hubo un error al actualizar el departamento',
+                      'error'
+                    );
+                    this._router.navigate(['/departments']);
+                  },
+                });
+            } else {
+              Swal.fire(
+                'Notificación del sistema ',
+                'Departamento actualizado con éxito',
+                'success'
+              );
+              this._router.navigate(['/departments']);
+            }
           },
           error: (err) => {
             if (err.status === Number(Codes.CODE_400)) {
@@ -75,6 +123,10 @@ export class EditComponent implements OnInit {
     } else {
       this.getFormValidationErrors();
     }
+  }
+
+  public get photoDepartment(): string {
+    return this._commonService.showPhoto(this.department.image, 'departments');
   }
 
   public validateForm(field: string): boolean {
@@ -159,5 +211,9 @@ export class EditComponent implements OnInit {
     if (this.updateSubscription) {
       this.updateSubscription.unsubscribe();
     }
+    if (this.uploadSubscription) {
+      this.uploadSubscription.unsubscribe();
+    }
+    this.photoSelected = null;
   }
 }
