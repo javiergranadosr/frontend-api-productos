@@ -206,5 +206,9 @@ export class EditComponent implements OnInit, OnDestroy {
     if (this.updateSubscription) {
       this.updateSubscription.unsubscribe();
     }
+    if (this.uploadSubscription) {
+      this.uploadSubscription.unsubscribe();
+    }
+    this.photoSelected = null;
   }
 }
